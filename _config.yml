@@ -15,8 +15,6 @@ paginate:            5
 # About/contact
 author:
   name:              Alkaha Romli
-  url:               https://twitter.com/alkaha
-  email:             alkaha_romli@yahoo.com
 
 # Custom vars
 version:             1.0.0
