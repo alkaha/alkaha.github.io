@@ -1,14 +1,14 @@
 # Permalinks
 #
 # Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           pretty
+permalink:           /alkaha.github.io/:year/:month/:day/:title/
 #relative_permalinks: true
 
 # Setup
 title:               alkaha
 tagline:             
 description:         koleksi terjemahan artikel teknologi front-end dan back-end ke dalam Bahasa Melayu.  Berkisar mengenai React, Ruby On Rails, Elixir, Phoenix dan lain-lain.
-url:                 'http://alkaha.github.io'
+url:                 http://alkaha.github.io
 baseurl:             ''
 paginate:            5
 
