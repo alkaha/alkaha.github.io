@@ -4,7 +4,7 @@ title: Membina Elixir Blog Dalam 15 Minit Menggunakan Phoenix - Langkah Demi Lan
 ---
 
 - Dokumen asal:  [Elixir blog in 15 minutes using Phoenix framework - Step by Step](http://codetunes.com/2015/phoenix-blog/) 
-- Penulis asal: 
+- Penulis asal: [Jakub Cieslar](http://jcieslar.pl/) 
 - Ringkasan: Artikel ini memperkenalkan penggunaan framework Phoenix utuk membina satu aplikasi blog yang ringkas. 
 
 ---

@@ -10,7 +10,7 @@ tagline:
 description:         koleksi terjemahan artikel teknologi front-end dan back-end ke dalam Bahasa Melayu.  Berkisar mengenai React, Ruby On Rails, Elixir, Phoenix dan lain-lain.
 url:                 http://alkaha.github.io
 baseurl:             ''
-paginate:            5
+paginate:            3
 
 # About/contact
 author:

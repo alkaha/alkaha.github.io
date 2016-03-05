@@ -1,0 +1,213 @@
+---
+layout: post
+title: Membuat HTML Testing di dalam Phoenix Controller
+---
+- Dokumen asal: [Testing HTML in Phoenix Controllers](https://robots.thoughtbot.com/testing-phoenix-controllers-with-ex-machina)
+- Penulis asal: [Paul Smith](https://twitter.com/paulcsmith)
+- Ringkasan: 
+---
+
+Phoenix mempunyai beberapa [helper](http://hexdocs.pm/phoenix/Phoenix.ConnTest.html) untuk kegunaan pengujian 'HTML responses'.  'Generator' yang siap tersedia di dalam Phoenix memberikan cara yang baik untuk bermula dengan proses pengujian HTML, tetapi diharapkan panduan ini akan memberikan penjelasan yang agak lebih mendalam.
+
+Di dalam artikel ini kita akan meneliti:
+
+- penggunaan 'Phoenix helpers' untuk menguji 'controller' dan tindakbalas mereka.
+- beberapa ralat yang biasa, apa maksud mereka dan bagaimana untuk mengatasi mereka
+- bagaimana untuk menggunakan [ExMachina](https://robots.thoughtbot.com/announcing-ex-machina) to menjana data ujian
+- bagaimana untuk menggunakan 'regular function' dan `|>` untuk customize data ujian yang hasilkan oleh ExMachina.
+
+## Setup
+
+Ikuti [arahan pemasangan Phoenix](http://www.phoenixframework.org/docs/installation) dan mulakan projek baru dengan `mix phoenix.new my_blog`.  Setelah semua 'dependencies' dipasang, dan setelah membuat pangkalan data dengan `mix ecto.create`, kita sedia untuk bermula.
+
+
+## Menguji senarai blog post
+
+Buat satu fail baru, `test/controllers/post_controller_test.exs`, seperti berikut:
+{% highlight ruby %}
+defmodule MyBlog.PostControllerTest do
+  use MyBlog.ConnCase
+
+  setup do
+    {:ok, conn: Phoenix.ConnTest.conn()}
+  end
+
+  test "lists all blog posts", %{conn: conn} do
+    posts = create_pair(:post)
+
+    conn = get conn, post_path(conn, :index)
+
+    for post <- posts do
+      assert html_response(conn, 200) =~ post.title
+    end
+  end
+end
+{% endhighlight %}
+
+Di dalam blok `setup` kita menjana satu `conn` yang akan digunakan.  Mulai dari Phoenix 1.1, ini akan dijana secara otomatik oleh `MyBlog.ConnCase`.
+
+Bahagian kedua pada 'tuple' yang dihasilkan dari blok `setup` tersebut akan digunakan sebagai 'argument' kepada pada 'function' `test`.
+
+Kita memanggil 'function' `ExMachina` iaitu `create_pair/3` yang akan menambah 2 'blog post' ke dalam pangkalan data.  Sekiranya kita tidak mahu menyimpan ke dalam pangkalan data, kita boleh gunakan 'function' `build_pair/3`.
+
+Seterusnya kita membuat 'request' kepada 'controller' kita dan memeriksa jika 'response' tersebut mempunyai tajuk kepada setiap 'blog post' kita.
+
+'Helper' `html_response` memastikan 'response' adalah berjaya(status code 200) dan mengembalikan kandungan 'HTML body'.  Penggunaan `=~` memeriksa jika apa-apa yang berada di bahagian kanan (`post.title`) adalah dijumpai di dalam bahagian kiri ('HTML body').
+
+Sekarang kita boleh cuba untuk menjalankan pengujian dengan menjalankan `mix test`.  Kita sepatutnya akan mendapat ralat seperti berikut:
+{% highlight ruby %}
+** (CompileError) test/controllers/post_controller_test.exs:5: function create_pair/1 undefined
+{% endhighlight %}
+
+## Memasang ExMachina
+
+Untuk mengatasi ralat tersebut, kita akan memasang ExMachina dan 'factory'.
+
+Tambahkan `{:ex_machina, "~> 0.5.0"} kepada bahagian 'dependencies' di dalam fail `mix.exs`, seperti berikut:
+{% highlight ruby %}
+defp deps do
+  [{:ex_machina, "~> 0.5.0"},
+   {:phoenix, "~> 1.0.3"},
+   # lain-lain 'dependencies'...
+  ]
+end
+{% endhighlight %}
+
+Kemudian tambah `:ex_machina` kepada senarai 'applications', seperti berikut:
+{% highlight ruby %}
+def application do
+  [mod: {MyBlog, []},
+   applications: [:ex_machina, :phoenix, :phoenix_html, :cowboy, :logger,
+                  :phoenix_ecto, :postgrex]]
+end
+{% endhighlight %}
+
+Kemudian, kita akan membuat 'factory' yang digunakan untuk menjana data ujian.  Kita akan menggunakan fail `lib/my_blog/factory.ex`.  Pastikan kita gunakan 'extension' `.ex`, bukannya `.exs`.  Lihat fail [ExMachina README] untuk maklumat semasa.
+{% highlight ruby %}
+defmodule MyBlog.Factory do
+  use ExMachina.Ecto, repo: MyBlog.Repo
+
+  def factory(:post) do
+    %MyBlog.Post{
+      title: sequence(:title, &"My Post #{&1}"),
+      body: "This is my post about something",
+      author: "Me!"
+    }
+  end
+end
+{% endhighlight %}
+
+Ini akan membuat satu 'factory' bernama `:post` yang dibina menggunakan 'struct' `MyBlog.Post`.  Kandungan 'body' dan 'author' adalah statik, tetapi kandungan 'title' menggunakan 'function' `sequence/2` untuk memastikan kandungan 'title' sentiasa unik.  Setiap kali satu 'post' baru ditambah, `n` akan ditambah `1`.  Sintaks `&("My Post #{&1}")` adalah 'shorthand' kepada `fn(f) -> "My Post #{n}" end`.  Kita boleh kaedah mana yang kita mahu guna.
+
+Seterusnya kita akan menambah `import MyBlog.Factory` di dalam blok `using` di dalam fail `test/support/conn_case.ex`, seperti berikut:
+{% highlight ruby %}
+using do
+  quote do
+    # ...other code automatically generated by Phoenix when you start a project
+    import MyBlog.Factory
+  end
+end
+{% endhighlight %} 
+
+## Menambah Model Post
+
+Jika kita menjalankan `mix test` kita akan mendapat:
+{% highlight ruby %}
+== Compilation error on file test/support/factory.ex ==
+** (CompileError) test/support/factory.ex:5: MyBlog.Post.__struct__/0 is
+undefined, cannot expand struct MyBlog.Post
+{% endhighlight %} 
+
+Ini disebabkan kita masih belum menyediakan satu 'struct' `MyBlog.Post`.  Kita akan menyediakan 'struct' tersebut dengan membina satu 'model' dan 'migration' seperti berikut:
+{% highlight ruby %}
+$ mix phoenix.gen.model Post posts title:string body:text author:string
+$ mix ecto.migrate
+{% endhighlight %}
+
+## Menambah 'routes' dan 'controller'
+
+Apabila kita menjalankan `$ mix test` kita akan mendapat ralat berikut:
+{% highlight ruby %}
+** (CompileError) test/controllers/post_controller_test.exs:11: function posts_path/2 undefined 
+{% endhighlight %} 
+
+Kita perlu menambah 'route' dan 'controller action'.
+
+Di dalam `web/router.ex`, edit sebagaimana berikut: 
+{% highlight ruby %}
+scope "/", MyBlog do
+  pipe_through :browser # Use the default browser stack
+
+  get "/", PageController, :index
+  resources "/posts", PostController, only: [:index]
+end
+{% endhighlight %} 
+
+Kemudian buat satu fail, `web/controllers/post_controller.ex`
+{% highlight ruby %}
+defmodule MyBlog.PostController do
+  use MyBlog.Web, :controller
+
+  def index(conn, _params) do
+  end
+end
+{% endhighlight %}
+
+## 'Get' dan 'display' post
+
+Edit fail `web/controllers/post_controller.ex` tersebut kepada sebagaimana berikut: 
+{% highlight ruby %}
+defmodule MyBlog.PostController do
+  use MyBlog.Web, :controller
+
+  alias MyBlog.Post
+
+  def index(conn, _params) do
+    # MyBlog.Repo is aliased for you when you `use MyBlog.Web, :controller`
+    posts = Repo.all(Post)
+    render(conn, "index.html", posts: posts)
+  end
+end
+{% endhighlight %}
+
+Apabila kita menjalankan `$ mix test`, kita akan mendapat:
+{% highlight ruby %}
+undefined function: MyBlog.PostView.render/2 (module MyBlog.PostView is not available)
+{% endhighlight %}
+
+Ini bermaksud kita perlu menambah 'view' dan 'template'.  Tambahkan fail berikut `web/views/post_view.ex`.
+{% highlight ruby %}
+defmodule MyBlog.PostView do
+  use MyBlog.Web, :view
+end
+{% endhighlight %}
+
+dan fail 'template', `web/templates/post/index.html.eex`
+{% highlight ruby %}
+<%= for post <- @posts do %>
+  <%= post.title %>
+<% end %>
+{% endhighlight %}
+
+Sekarang `$ mix test` sepatutnya berjaya dijalankan.
+
+## Menggunakan function composition untuk menjalankan pengujian yang lebih robust
+
+Katakanlah kita dibenarkan untuk meletakkan tag pada 'post' kita.  Setiap 'post' akan mempunyai beberapa 'tag'.  Kita mulakan dengan membuat update kepada 'factory'.  Kita menganggap bahawa 'model' telah disediakan dan melompat terus membuat update kepada 'test'.
+{% highlight ruby %}
+def factory(:tag) do
+  %MyBlog.Tag{
+    name: sequence(:tag_name, fn(n) -> "Tag #{n}" end)
+  }
+end
+
+def factory(:post_tag) do
+  %MyBlog.PostTag{
+    post: build(:post)
+    tag: build(:tag)
+  }
+end
+{% endhighlight %}
+
+Kita akan menggunakan 'sequence' yang baru supaya apabila kita membina satu `:tag`, ia akan menghasilkan nama unik.
+
