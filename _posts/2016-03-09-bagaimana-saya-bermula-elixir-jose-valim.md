@@ -175,7 +175,7 @@ iex> Agent.update(agent, fn list -> [0|list] end)
 iex> Agent.get(agent, fn list -> list end)
 [0]
 {% endhighlight %}
-Nota: anda mungkin akan mendapat nilai #PID<..> berlainan dari contoh di atas, ianya sesuatu yang memang dijangkakan.
+> Nota: anda mungkin akan mendapat nilai #PID<..> berlainan dari contoh di atas, ianya sesuatu yang memang dijangkakan.
 
 Di dalam contoh di atas, kita membuat satu 'agent' baru, menghantar satu 'function' yang menghasilkan keadaan awal, iaitu satu list kosong([]).  'Agent' tersebut memulangkan {:ok, #PID<0.61.0>}
 
@@ -517,7 +517,7 @@ Sekarang mulakan satu sesi `iex` bernama `room2`:
 {% highlight ruby %}
 $ iex --sname room2 --cookie secret -S mix
 {% endhighlight %}
-Nota: 'cookie' yang sama hendaklah digunakan di kedua-dua komputer untuk membenarkan kedua-dua 'node' Elixir tersebut berkomuikasi antara satu sama lain.
+> Nota: 'cookie' yang sama hendaklah digunakan di kedua-dua komputer untuk membenarkan kedua-dua 'node' Elixir tersebut berkomuikasi antara satu sama lain.
 
 API 'Agent' membenarkan kita untuk membuat 'cross-node requests'.  Apa yang perlu dilakukan adalah menghantar nama 'node' di mana 'agent' yang cuba dicapai sedang berjalan apabila menjalankan function-function `Portal.Door`.  Sebagai contoh cuba capai pintu 'blue' dari `room2`:
 {% highlight ruby %}
