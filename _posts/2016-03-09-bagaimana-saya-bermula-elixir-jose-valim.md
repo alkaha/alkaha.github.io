@@ -30,7 +30,7 @@ Berikut ada apa yang akan kita pelajari:
 - Menggunakan 'struct' untuk struktur data
 - Penggunaan 'protokol' untuk membina fungsi tambahan kepada bahasa asal
 - Penggunaan 'Supervision tree' dan 'Application'
-- Mengedarkan nod-nod Elixir
+- Mengedarkan 'node-node' Elixir
 
 Mari kita mulakan!
 
@@ -40,10 +40,11 @@ Laman web Elixir menerangkan cara untuk memasang dan menyediakan penggunaan Elix
 
 Pengguna Elixir banyak menggunakan terminal Operating System mereka; apabila pemasangan telah siap, beberapa executable baru akan siap untuk digunakan.  Salah satunya adalah `iex`.  Taipkan `iex` ke dalam terminal (atau `iex.bat` jika pengguna Windows) untuk bermula.
 
-{% highlight ruby %}
+{% highlight bash %}
 $ iex
 Interactive Elixir - press Ctrl+C to exit (type h() ENTER for help)
-{% endhighlight %} 
+{% endhighlight %}
+
 `iex` adalah untuk 'Interactive Elixir'. Di dalam `iex` kita boleh menaipkan apa-apa arahan dan akan mendapat paparan hasil arahan tersebut:
 {% highlight ruby %}
 iex> 40 + 2
@@ -69,14 +70,12 @@ iex(1)> Portal.shoot(:orange)
 {:ok, #PID<0.72.0>}
 iex(2)> Portal.shoot(:blue)
 {:ok, #PID<0.74.0>}
-
 # Mula menghantar senarai [1, 2, 3, 4] dari pintu orange ke pintu blue
 iex(3)> portal = Portal.transfer(:orange, :blue, [1, 2, 3, 4])
 #Portal<
        :orange <=> :blue
   [1, 2, 3, 4] <=> []
 >
-
 # Sekarang apabila kita membuat arahan push_right, data akan pergi ke pintu blue
 iex(4)> Portal.push_right(portal)
 #Portal<
@@ -191,31 +190,26 @@ Kita akan gunakan 'agent' untuk membina pintu-pintu portal kita.  Buat satu fail
 defmodule Portal.Door do
   @doc """
   Starts a door with the given `color`.
-
   The color is given as a name so we can identify
   the door by color name instead of using a PID.
   """
   def start_link(color) do
     Agent.start_link(fn -> [] end, name: color)
   end
-
   @doc """
   Get the data currently in the `door`.
   """
   def get(door) do
     Agent.get(door, fn list -> list end)
   end
-
   @doc """
   Pushes `value` into the door.
   """
   def push(door, value) do
     Agent.update(door, fn list -> [value|list] end)
   end
-
   @doc """
   Pops a value from the `door`.
-
   Returns `{:ok, value}` if there is a value
   or `:error` if the hole is currently empty.
   """
@@ -342,7 +336,7 @@ Kita telah tahu yang kita boleh memaparkan data di dalam `iex`.  Yakni, jika kit
 Ya, boleh!  Elixir menyediakan 'protocol', yang membenarkan kita untuk membuat perubahan kepada kelakuan asal dan boleh digunakan ke atas semua jenis data.
 
 Sebagai contoh, setiap kali sesuatu dipaparkan di dalam terminal `iex`, Elixir menggunakan 'protocol' `Inspect`.  Oleh sebab 'protocol' boleh diubahsuai untuk semua jenis data pada setiap masa, ia juga boleh digunapakai untuk `Portal`.  Buka fail `lib/portal.ex` dan pada penghujung fail, di luar modul `Portal`, tambahkan kod berikut:
-{ highlight ruby}
+{% highlight ruby %}
 defimpl Inspect, for: Portal do
   def inspect(%Portal{left: left, right: right}, _) do
     left_door  = inspect(left)
@@ -446,8 +440,9 @@ def start(_type, _args) do
   opts = [strategy: :simple_one_for_one, name: Portal.Supervisor]
   Supervisor.start_link(children, opts)
 end
-[ endhighlight ] 
-Kuta telah membuat dua perubahan:
+{% endhighlight %} 
+Kita telah membuat dua perubahan:
+
 - Kita telah menambah satu 'child' kepada 'supervisor' kita, iaitu dari jenis `worker`, dan 'child' tersebut adalah dari modul `Portal.Door`.  Kita tidak meghantar apa-apa 'argument' kepada 'worker' tersebut, cuma satu list kosong(`[]`).
 - Kita juga mengubah startegy dari `:one_for_one` kepada `:simple_one_for_one`.  'Supervisor' menyediakan pelbagai strategi dan `:simple_one_for_one` adalah berguna apabila kita mahu membuat 'children' secara dinamik, selalunya dengan 'argument' yang berbeza.  Ini adalah apa yang kita perlukan untuk pintu-pintu portal kita, di mana kita mahu 'spawn' pelbagai pintu dengan pelbagai warna.
 
@@ -570,12 +565,12 @@ Kita telah sampai ke penghujung panduan bagaimana untuk bermula dengan Elixir!  
 Kami mencabar anda untuk meneruskan mempelajari dan meneroka Elixir dengan menambahbaik aplikasi portal ini:
 - Menambah function `Portal.push_left/1` yang membuat penghantaran data dari pintu kanan ke pintu kiri.  Bagaimana untuk megelak dari menulis kod berulang di dalam kedua-dua function `push_left/1` dan `push_right/1` tersebut?
 - Belajar mengenai [ExUnit](http://elixir-lang.org/docs/stable/ex_unit/ExUnit.html), 'testing framework' untuk Elixir, dan menulis 'test' kepada implementasi kita setakat ini.  Kita sudahpun mempunyai struktur asas untuk ini di dalam direktori `test`.
-- Menajana dokumentasi dalam bentuk HTML menggunakan [ExDoc]().
-- 'Publish' projek anda ke sumber luaran, seperti [Github](), dan 'publish' satu pakej menggunakan [Hex Package Manager](https://hex.pm/).
+- Menajana dokumentasi dalam bentuk HTML menggunakan [ExDoc](http://github.com/elixir-lang/ex_doc).
+- 'Publish' projek anda ke sumber luaran, seperti [Github](https://github.com/), dan 'publish' satu pakej menggunakan [Hex Package Manager](https://hex.pm/).
 
 Kami mengalu-alukan anda untuk meneroka [laman web kami](http://elixir-lang.org/) dan baca panduan Getting Started atau lain-lain sumber yang telah kami bekalkan untuk anda mempelajari lebih lanjut mengenai Elixir dan komuniti kami.
 
-Akhir sekali, berbanyak terima kasih kepada [Augie De Blieck Jr.](http://twitter.com/augiedb) yag menyediakn lukisan di dalam tutorial ini.
+Akhir sekali, berbanyak terima kasih kepada [Augie De Blieck Jr.](http://twitter.com/augiedb) yag menyediakan lukisan di dalam tutorial ini.
 
 See you around! 
 
