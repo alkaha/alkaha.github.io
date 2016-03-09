@@ -140,12 +140,12 @@ iex> head
 iex> tail
 [2, 3]
 {% endhighlight %}
-Menyesuaikan list kosong kepada [head|tail] menyebabkan ralat:
+Menyesuaikan list kosong kepada [head\|tail] menyebabkan ralat:
 {% highlight ruby %}
 iex> [head|tail] = []
 ** (MatchError) no match of right hand side value: []
 {% endhighlight %}
-Akhir sekali kita juga boleh gunakan kenyataan [head|tail] untuk menambah satu elemen kepada kepala satu list:
+Akhir sekali kita juga boleh gunakan kenyataan [head\|tail] untuk menambah satu elemen kepada kepala satu list:
 {% highlight ruby %}
 iex> list = [1,2,3]
 [1,2,3]
@@ -325,13 +325,13 @@ iex> Portal.Door.get(:blue)
 {% endhighlight %}
 Nampaknya penghantaran data melalui portal berjalan sebagai yang dijangka. Perhatikan yang data yang adalah di dalam susunan songsang dari susunan data yang dihantar.  Ini dijangkakan kerana kita mahukan elemen terakhir dari list(dalam kes ini nombor 3) mejadi elemen pertama yang dihantar melalui pintu di sebelah kanan(blue).
 
-Buat masa ini, data yang dipaparkan oleh `iex` adalah dalam bentuk 'struct', iaitu `%Portal{left: :orange, right: :blue}. Kita mahukan paparan yang menunjukkan 'perjalanan' data semasa proses penghantaran.
+Buat masa ini, data yang dipaparkan oleh `iex` adalah dalam bentuk 'struct', iaitu `%Portal{left: :orange, right: :blue}`. Kita mahukan paparan yang menunjukkan 'perjalanan' data semasa proses penghantaran.
 
 Kita akan bina fungsi ini seterusnya.
 
 ## Penggunaan Protocols
 
-Kita telah tahu yang kita boleh memaparkan data di dalam `iex`.  Yakni, jika kita meaip `1 + 2`, `iexe` akan memaparkan `3`.  Adakah kita dibenarkan untuk membuat perubahan kepada bentuk data yang dipaparkan?
+Kita telah tahu yang kita boleh memaparkan data di dalam `iex`.  Yakni, jika kita menaip `1 + 2`, `iexe` akan memaparkan `3`.  Adakah kita dibenarkan untuk membuat perubahan kepada bentuk data yang dipaparkan?
 
 Ya, boleh!  Elixir menyediakan 'protocol', yang membenarkan kita untuk membuat perubahan kepada kelakuan asal dan boleh digunakan ke atas semua jenis data.
 
@@ -375,7 +375,7 @@ iex> portal = Portal.transfer(:orange, :blue, [1, 2, 3])
 
 ## Proses Menembak Pintu Portal
 
-Kita selali dengar bahawa Erlang VM, iaitu 'virtual machine' yang digunakan oleh Elixir, adalah amat bagus untuk membina aplikasi yang bersifat 'fault tolerant'.  Salah satu faktor yang membenarkan keadaan ini adalah sesuatu yang dipanggil sebagai 'supervision trees'.
+Kita selalu dengar bahawa Erlang VM, iaitu 'virtual machine' yang digunakan oleh Elixir, adalah amat bagus untuk membina aplikasi yang bersifat 'fault tolerant'.  Salah satu faktor yang membenarkan keadaan ini adalah sesuatu yang dipanggil sebagai 'supervision trees'.
 
 Kod kita setakat ini adalah tidak di'urus'kan('supervised').  Cuba kita lihat apa yang berlaku apabila kita mematikan salah satu 'agent' pintu portal tersebut:
 {% highlight ruby %}
@@ -426,7 +426,7 @@ defmodule Portal do
   # ... functions we have added ...
 end
 {% endhighlight %}
-Kod di atas menjadikan modul `Portal` sebagai 'application callback'.  'Application callback' mesti menyediakan satu function bernama `start/2`, seperti yang kita lihat di atas, dan function ii mesti menjalankan satu 'supervisor' sebagai 'root' kepada 'supervision tree' kita.  Sekarang ini 'supervision tree' kita tidak mempunyai 'children' dan ini yang akan kita ubah seterusnya.
+Kod di atas menjadikan modul `Portal` sebagai 'application callback'.  'Application callback' mesti menyediakan satu function bernama `start/2`, seperti yang kita lihat di atas, dan function ini mesti menjalankan satu 'supervisor' sebagai 'root' kepada 'supervision tree' kita.  Sekarang ini 'supervision tree' kita tidak mempunyai 'children' dan ini yang akan kita ubah seterusnya.
 
 Ubah function `start/2` di atas kepada berikut:
 {% highlight ruby %}
@@ -498,7 +498,7 @@ Outstanding!
 
 ## Distributed transfers
 
-Aplikasi portal kita telah berjaya dijalankan, jadi sekarang kita akan mencuba process 'distributed transfer'.  Ianya amat hebat jika anda menjalankan kod kita di atas dua mesin berlainan di dalam rangkaia anda.  Walaubagaimanapun, jika tidak mempunya mesin lain, kita masih boleh membuat pengujian ini.
+Aplikasi portal kita telah berjaya dijalankan, jadi sekarang kita akan mencuba process 'distributed transfer'.  Ianya amat hebat jika anda menjalankan kod kita di atas dua mesin berlainan di dalam rangkaian anda.  Walaubagaimanapun, jika tidak mempunya mesin lain, kita masih boleh membuat pengujian ini.
 
 Kita boleh mulakan satu sesi `iex` sebagai satu 'node' di dalam satu 'network' dengan menggunakan pilihan `--sname`.  Kita boleh mula mencuba:
 {% highlight ruby %}
@@ -563,9 +563,10 @@ iex(room1@COMPUTER-NAME)> Portal.Door.get(blue)
 Kita telah sampai ke penghujung panduan bagaimana untuk bermula dengan Elixir!  Dengan pantasnya kita telah bermula dengan memulakan proses membuat pintu portal secara manual kepada membuatnya sebagai 'fault tolerant' untuk kegunaan dalam 'distributed transfer'!
 
 Kami mencabar anda untuk meneruskan mempelajari dan meneroka Elixir dengan menambahbaik aplikasi portal ini:
+
 - Menambah function `Portal.push_left/1` yang membuat penghantaran data dari pintu kanan ke pintu kiri.  Bagaimana untuk megelak dari menulis kod berulang di dalam kedua-dua function `push_left/1` dan `push_right/1` tersebut?
 - Belajar mengenai [ExUnit](http://elixir-lang.org/docs/stable/ex_unit/ExUnit.html), 'testing framework' untuk Elixir, dan menulis 'test' kepada implementasi kita setakat ini.  Kita sudahpun mempunyai struktur asas untuk ini di dalam direktori `test`.
-- Menajana dokumentasi dalam bentuk HTML menggunakan [ExDoc](http://github.com/elixir-lang/ex_doc).
+- Menjana dokumentasi dalam bentuk HTML menggunakan [ExDoc](http://github.com/elixir-lang/ex_doc).
 - 'Publish' projek anda ke sumber luaran, seperti [Github](https://github.com/), dan 'publish' satu pakej menggunakan [Hex Package Manager](https://hex.pm/).
 
 Kami mengalu-alukan anda untuk meneroka [laman web kami](http://elixir-lang.org/) dan baca panduan Getting Started atau lain-lain sumber yang telah kami bekalkan untuk anda mempelajari lebih lanjut mengenai Elixir dan komuniti kami.
