@@ -23,14 +23,14 @@ Di dalam panduan ini kita akan menggunakan bahasa Elixir untuk membina 'portal' 
 
 Berikut ada apa yang akan kita pelajari:
 
-- Elixir interactive shell
+- Sistem Kekerang Interaktif(interactive shell) Elixir
 - Memulakan projek baru Elixir
 - Pemadanan Corak(Pattern Matching)
-- Menggunakan Agent untuk menguruskan 'state' aplikasi
+- Menggunakan Agent untuk menguruskan keadaan semasa(state) aplikasi
 - Menggunakan 'struct' untuk struktur data
-- Penggunaan 'protokol' untuk membina fungsi tambahan kepada bahasa asal
+- Penggunaan 'protocol' untuk membina fungsi tambahan kepada bahasa asal
 - Penggunaan 'Supervision tree' dan 'Application'
-- Mengedarkan 'node-node' Elixir
+- Mengagihkan 'node-node' Elixir
 
 Mari kita mulakan!
 
@@ -54,7 +54,7 @@ iex> "hello" <> " world"
 iex> # gunakan simbol ini untuk membuat komen
 nil
 {% endhighlight %} 
-Selain dari nombor dan 'string' sebagaimana di atas, kita juga selalu menggunakan 'data type' berikut:
+Selain dari nombor dan rentetan('string') sebagaimana di atas, kita juga selalu menggunakan 'data type' berikut:
 {% highlight ruby %}
 iex> :atom           # satu identifier (juga dikenali sebagai Symbol di dalam bahasa lain)
 :atom
@@ -358,7 +358,7 @@ end
 {% endhighlight %}
 Di dalam 'snippet' di atas kita telah membina 'protocol' `Inspect` untuk 'struct' `Portal`.  'Protocol' ini cuma memerlukan satu fungsi yang dinamakan `inspect` dan memerlukan dua argumen, iaitu 'struct' `Portal` itu sendiri dan satu argumen lain yang kita akan biarkan dahulu buat masa ini.
 
-Kemudian kita akan memanggil `inspect` beberapa kali, untuk mendapatkan struktur dan data untuk `left` dan `right`.  Akhir sekali kita akan memulangkan satu 'string' yang menggambarkan kedudukan portal tersebut.
+Kemudian kita akan memanggil `inspect` beberapa kali, untuk mendapatkan struktur dan data untuk `left` dan `right`.  Akhir sekali kita akan memulangkan satu rentetan('string') yang menggambarkan kedudukan portal tersebut.
 
 Mulakan satu sesi baru `iex` dengan menaip `iex -S mix` untuk melihat hasilnya:
 {% highlight ruby %}
