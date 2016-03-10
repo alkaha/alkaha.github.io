@@ -18,8 +18,10 @@ Tujuan utama artikel ini adalah untuk menarik perhatian anda kepada Elixir dan P
 ## Persediaan
 
 Pertama sekali, kita perlu memasang Elixir: [http://elixir-lang.org/install.html](http://elixir-lang.org/install.html]).  Seterusnya, pasang 'Hex package manager' dan Phoenix:
-{% highlight js %}
-
+{% highlight bash %}
+$ mix local.hex
+$ mix archive.install
+  https://github.com/phoenixframework/phoenix/releases/download/v0.16.1/phoenix_new-0.16.1.ez
 {% endhighlight %}
 
 Langkah-langkah terperinci dijelaskan di [sini]().
@@ -27,12 +29,12 @@ Langkah-langkah terperinci dijelaskan di [sini]().
 ## Langkah 1
 
 Mulakan projek baru bertajuk 'blog_phoenix':
-{% highlight js %} 
+{% highlight bash %} 
 $ mix phoenix.new blog_phoenix
 {% endhighlight %} 
 
 Kita akan dapat melihat fail-fail berikut dihasilkan:
-{% highlight js %} 
+{% highlight bash %} 
 * creating blog_phoenix/config/config.exs
 * creating blog_phoenix/config/dev.exs
 * creating blog_phoenix/config/prod.exs
@@ -78,7 +80,7 @@ $ cd blog_phoenix
 $ mix deps.get
 {% endhighlight %}
 
-Selepas 'compiling' kita akan mendapat aplikasi yang sedia untuk digunakan di: `http://localhost:4000`.
+Selepas mengkompil kita akan mendapat aplikasi yang sedia untuk digunakan di: `http://localhost:4000`.
 
 ## Langkah 2
 
@@ -91,14 +93,14 @@ $ mix phoenix.gen.model →  yang menghasilkan 'model' dan 'repository'
 {% endhighlight %}
 
 Kita gunakan 'generator' pertama utuk meghasilkan kesemua 'resource' dan 'action' - lebih kurang sama dengan kegunaan 'generator' Ruby on Rails.  Kita perlu untuk menggunakan nama dalam betuk 'singular' dan 'plural', dan seterusnya nama 'field' bersama dengan 'type'.
-{% highlight js %} 
+{% highlight bash %} 
 $ mix phoenix.gen.html Post posts title:string body:text
 {% endhighlight %}
 
 Sekarang kemudahan CRUD untuk entiti `Post` sudah tersedia.
 
 Berikut adalah senarai fail yang dihasilkan:
-{% highlight ruby %} 
+{% highlight bash %} 
 * creating priv/repo/migrations/20150730233126_create_post.exs
 * creating web/models/post.ex
 * creating test/models/post_test.exs
@@ -118,7 +120,7 @@ resources "/posts", PostController
 {% endhighlight %}
 
 Untuk melihat senarai `routing` kita boleh gunakan:
-{% highlight ruby %}
+{% highlight bash %}
  $ mix phoenix.routes
 {% endhighlight %}
 
@@ -145,7 +147,7 @@ Melalui `http://localhost:4000/post` kita akan dapat melihat bagaimana kemudahan
 
 Langkah seterusnya di dalam aplikasi blog kita adalah untuk menyediakan kemudahan 'comment', iaitu kemudahan untuk melihat senarai komen dan menambah komen baru.  Kita akan membenarkan banyak komen untuk setiap `post`.  Kita akan gunakan 'generator' yang akan menghasilkan 'model' dan 'migration' untuk entiti `Comment`:
  
-{% highlight ruby %}
+{% highlight bash %}
 $ mix phoenix.gen.model Comment comments name:string content:text post_id:references:posts
 {% endhighlight %}
 
@@ -166,11 +168,11 @@ end
 {% endhighlight %}
 
 Kemudian kita jalankan 'migration' seperti:
-{% highlight ruby %}
+{% highlight bash %}
 $ mix ecto.migrate
 {% endhighlight %}
 
-Seterusnya kita perle menambah fungsi `add_comment` di dalam fail `web/router.ex`:
+Seterusnya kita perlu menambah fungsi `add_comment` di dalam fail `web/router.ex`:
 {% highlight ruby %}
 resources "/posts", PostController do
   post "/comment", PostController, :add_comment
@@ -178,7 +180,10 @@ end
 {% endhighlight %}
 
 Kita baru menambah 'resource' untuk `comment` di dalam 'resource' untuk `post`. Kita boleh melihat 'routing table' yang baru seperti berikut:
-{% highlight ruby %}
+{% highlight bash %}
+$ mix phoenix.routes
+
+post_post_path  POST    /posts/:post_id/comment  BlogPhoenix.PostController :add_comment
 
 {% endhighlight %}
 
@@ -187,14 +192,14 @@ Seterusnya kita perlu membuat perubahan pada `PostController`(iaitu fail `web/co
 alias BlogPhoenix.Comment
 {% endhighlight %}
 
-Baca mengenai 'alias' di [sini]().
+Baca mengenai 'alias' di [sini](http://elixir-lang.org/getting-started/alias-require-and-import.html).
 
-Seterusnya tambah 'scrub params' pada bahagian atas 'controller'.  'Scrub params' adalah sama dengan 'strong parameters' di dalam Rails.  Baca mengenai 'scrub params' di [sini]().
+Seterusnya tambah 'scrub params' pada bahagian atas 'controller'.  'Scrub params' adalah sama dengan 'strong parameters' di dalam Rails.  Baca mengenai 'scrub params' di [sini](http://hexdocs.pm/phoenix/Phoenix.Controller.html#scrub_params/2).
 {% highlight ruby %}
 plug :scrub_params, "comment" when action in [:add_comment]
 {% endhighlight %}
 
-dan 'function' `add_comment`:
+dan fungsi `add_comment`:
 {% highlight ruby %}
 def add_comment(conn, %{"comment" => comment_params, "post_id" => post_id}) do
   changeset = Comment.changeset(%Comment{}, Map.put(comment_params, "post_id", post_id))
@@ -212,7 +217,7 @@ def add_comment(conn, %{"comment" => comment_params, "post_id" => post_id}) do
 end
 {% endhighlight %}
 
-Fungsi `changeset` yang digunakan di dalam kod di atas boleh di dapati di dalam fail `web/models/comment.ex`.  Baca mengenai Ecto `changeset` di [sini]().
+Fungsi `changeset` yang digunakan di dalam kod di atas boleh di dapati di dalam fail `web/models/comment.ex`.  Baca mengenai Ecto `changeset` di [sini](http://hexdocs.pm/ecto/Ecto.html).
 
 Seterusnya kita perlu mengubah 'function' `show` seperti berikut:
 {% highlight ruby %}
@@ -222,9 +227,9 @@ def show(conn, %{"id" => id}) do
   render(conn, "show.html", post: post, changeset: changeset)
 end
 {% endhighlight %}
-untuk membenarkan kita meletakkan 'comment form' di dalam 'view' untuk `post`.
+untuk membenarkan kita meletakkan borang komen di dalam paparan untuk `post`.
 
-Seterusnya kita perlu membuat 'comment form' tersebut di dalam 'template', iaitu fail `web/templates/post/comment_form.html.eex`:
+Seterusnya kita perlu membuat borang komen tersebut di dalam 'template', iaitu fail `web/templates/post/comment_form.html.eex`:
 {% highlight ruby %}
 <%= form_for @changeset, @action, fn f -> %>
   <%= if f.errors != [] do %>
@@ -353,6 +358,6 @@ Kita boleh melihat bagaimana blog post kita berfungsi di:
 
 ## Ringkasan:
 
-'Source code' untuk aplikasi ini boleh di dapati di [Github]().  Aplikasi blog ini ada amat ringkas dan ianya cuma satu percubaan untuk menunjukkan bagaimana mudahnya untuk bermain dengan Elixir dan Phoenix jika kita mempunyai latarbelakang Ruby On Rails.  Sepertimana yang dapat kita lihat, ianya semudah jika ianya dibina menggunakan Rails!  Kita dapat melihat beberapa kesamaan antara Elixir/Phoenix dan Ruby On Rails dari segi 'convention' yang digunakan.  Framework ini menyediakan banyak konsep yang telah dikenali seperti 'models', 'routing', 'controllers' dan 'form helpers', dan juga beberapa konsep baru seperti 'repositories' dan 'changesets(channels)'.  Dengan itu kita merasa selesa untuk menulis kod, tetapi kita perlu ingat bahawa kita tidak lagi menggunakan kaedah 'Object Oriented Programming'.  Oleh itu kita perlu mengubah minda kita kepada mod 'Functional Programming' - dan ianya mengujakan!
+'Source code' untuk aplikasi ini boleh di dapati di [Github](https://github.com/jcieslar/blog_phoenix).  Aplikasi blog ini ada amat ringkas dan ianya cuma satu percubaan untuk menunjukkan bagaimana mudahnya untuk bermain dengan Elixir dan Phoenix jika kita mempunyai latarbelakang Ruby On Rails.  Sepertimana yang dapat kita lihat, ianya semudah jika ianya dibina menggunakan Rails!  Kita dapat melihat beberapa kesamaan antara Elixir/Phoenix dan Ruby On Rails dari segi 'convention' yang digunakan.  Framework ini menyediakan banyak konsep yang telah dikenali seperti 'models', 'routing', 'controllers' dan 'form helpers', dan juga beberapa konsep baru seperti 'repositories' dan 'changesets(channels)'.  Dengan itu kita merasa selesa untuk menulis kod, tetapi kita perlu ingat bahawa kita tidak lagi menggunakan kaedah 'Object Oriented Programming'.  Oleh itu kita perlu mengubah minda kita kepada mod 'Functional Programming' - dan ianya mengujakan!
 
 Saya berharap ini akan menggalakkan anda untuk melihat lebih dekat akan Elixir dan Phoenix.  Siapa tahu, mungkin Elixir on Phoenix menjadi standard untuk generasi baru web?  
