@@ -1,19 +1,19 @@
 ---
 layout: post
-title: Pattern Matching melalui Elixir
+title: Pemadanan Corak(Pattern Matching) melalui Elixir
 ---
 
 - Dokumen asal: [https://quickleft.com/blog/pattern-matching-elixir/](https://quickleft.com/blog/pattern-matching-elixir/)
 - Penulis asal: [Trace Helms](https://quickleft.com/blog/author/thelms/)
-- Ringkasan: Dokumen ini memperkenalkan penggunaan 'pattern matching' melalui Elixir. Ia juga memberikan pengenalan awal kepada Elixir dan Functional Programming.  Dokumen ini menganggap anda mempunyai penegenalan asas mengenai Elixir.
+- Ringkasan: Dokumen ini memperkenalkan penggunaan pemadanan corak('pattern matching') melalui Elixir. Ia juga memberikan pengenalan awal kepada Elixir dan Functional Programming.  Dokumen ini menganggap anda mempunyai penegenalan asas mengenai Elixir.
 
 ---
 
 ### Pengenalan
 
-Mempelajari 'programming language' baharu adalah satu cara yang baik untuk mengembangkan pengetahuan kita mengenai programming.  Dengannya kita akan dapat menambah teknik-teknik yang baharu dan juga memberikan pandangan dan cara berfikir yang baharu. Salah satu perkara yang dapat saya cungkil dari Elixir adalah 'pattern matching'.  Ianya timbul dari penggunaan di dalam Erlang dan bagi saya ianya salah satu elemen yang saya harap ada pada kebanyakan 'programming language'.
+Mempelajari 'programming language' baharu adalah satu cara yang baik untuk mengembangkan pengetahuan kita mengenai programming.  Dengannya kita akan dapat menambah teknik-teknik yang baharu dan juga memberikan pandangan dan cara berfikir yang baharu. Salah satu perkara yang dapat saya cungkil dari Elixir adalah pemadanan corak('pattern matching').  Ianya timbul dari penggunaan di dalam Erlang dan bagi saya ianya salah satu elemen yang saya harap ada pada kebanyakan 'programming language'.
 
-### Apa itu 'Pattern Matching'?
+### Apa itu Pemadanan Corak(Pattern Matching)?
 
 Di dalam Elixir, simbol `=` tidak semestinya bermaksud "ubah nilai satu variable kepada nilai yang lain".  Sebaliknya ia bermakna "samakan bahagian kiri dengan bahagian kanan".  Biasanya kita akan menulis `x = 2` dan tidak nampak apa yag berbeza.  Tetapi apabila sampai satu peringkat, kita akan nampak sesuatu yang agak berbeza.
 
@@ -49,7 +49,7 @@ iex> ^x = 2 # force no reusing of variables
 
 Walaupun di pengakhir kod di atas, kita telah `x` telah disesuaikan dengan nilai `3`, tetapi dibelakang tabir, masih lagi terdapat variable `x` yang disesuaikan dengan nilai asal, iaitu `2`.  Sekiranya anda menghantar 'variable' `x` kepada satu proses yang sedang berjalan secara selari, proses tersebut akan menerima 'variable' `x` yang mempunyai nilai `2`.  Kod di atas menunjukkan kita mengulangguna 'variable' `x` dengan memberikannya nilai berbeza.  Kita juga boleh menghalangnya dari berlaku dengan menggunakan simbol `^`, contohnya `^x`.  Contohnya kod di atas menunjukkan ralat apabila kita menaip `^x = 2`, kerana buat masa ini `x` sedang disuaikan dengan `3`.  Tetapi jika menaip `^x = 3`, ianya dibenarkan kerana nilai semasa `x` adalah `3`.  
 
-### Asas 'Pattern Matching'
+### Asas Pemadanan Corak(Pattern Matching)
 
 Jika kita ada satu 'tuple' dan kita mahu meletakkan nilai isi kandungan 'tuple' tersebut kepada beberapa 'variable' yang berbeza sebagaimana berikut:
 
@@ -105,11 +105,11 @@ iex> MyCase.do_something({:wat, true})
 "You passed in something else."
 {% endhighlight %}
 
-Saya berharap ianya menjelaskan faedah penggunaan 'pattern matching' di dalam Elixir.  Sekiranya digunakan dengan betul, ia akan membuat kod yang kita tulis senang untuk dibaca.
+Saya berharap ianya menjelaskan faedah penggunaan pemadanan corak('pattern matching') di dalam Elixir.  Sekiranya digunakan dengan betul, ia akan membuat kod yang kita tulis senang untuk dibaca.
 
-### Penggunaan 'Pattern Matching' Ketika Membuat Function
+### Penggunaan Pemadanan Corak(Pattern Matching) Ketika Membuat Fungsi
 
-Ini adalah situasi di mana 'pattern matching' paling berguna dan paling kerap digunakan di dalam Elixir.  Kita akan menulis 'function' yang hanya akan dijalankan apabila 'argument' 'function' tersebut adalah sama dengan 'pattern' yang diuji. Sebagai contoh:
+Ini adalah situasi di mana pemadanan corak('pattern matching') paling berguna dan paling kerap digunakan di dalam Elixir.  Kita akan menulis 'function' yang hanya akan dijalankan apabila 'argument' 'function' tersebut adalah sama dengan 'pattern' yang diuji. Sebagai contoh:
 {% highlight js%} 
 # talker.exs
 defmodule Talker do
@@ -133,9 +133,9 @@ iex(8)> Talker.say_hello('random person')
 "Whatever, random person."
 {% endhighlight %}
 
-Kita dapat lihat ketiga-tiga 'function' tersebut (yang diberikan nama yang sama) dijalankan mengikut 'argument' yang dibekalkan.  Ini memberikan asas untuk kepada beberapa perkara yang hebat, seperti 'recursion' yang begitu banyak menggunakan 'pattern matching', yang akan kita lihat seterusnya.
+Kita dapat lihat ketiga-tiga 'function' tersebut (yang diberikan nama yang sama) dijalankan mengikut 'argument' yang dibekalkan.  Ini memberikan asas untuk kepada beberapa perkara yang hebat, seperti 'recursion' yang begitu banyak menggunakan pemadanan corak('pattern matching'), yang akan kita lihat seterusnya.
 
-### Kegunaan 'Pattern Matching' di dalam 'Recursion'
+### Kegunaan Pemadanan Corak(Pattern Matching) di dalam Lelaran(Recursion)
 
 Kita akan menulis satu 'function' yang akan menukar nilai setiap nombor di dalam satu 'list' kepada ganda kuasa 2 (contohnya menukar [2,3,4] kepada [4,9,16]). Kita mulakan dengan menulis 'function' yang menghasilkan 'list' kosong, iaitu `[]`.  Kemudian kita menulis 'function' yang membuat operasi arithmetik yang diperlukan. 
 
@@ -183,6 +183,6 @@ iex> MySquarer.square([-1, -2, -3])
 {% endhighlight %}
 
 ### Penutup
-Saya berharap sekarang anda dapat lebih memahami apa itu 'pattern matching' di dalam Elixir dan bagaimana ianya bermanafaat. Teknik 'recursion' memang agak sukar untuk difahami, tetapi 'pattern matching' di dalam Elixir memberikan peluang kepada kita untuk lebih mudah untuk menulis dan memahaminya. 
+Saya berharap sekarang anda dapat lebih memahami apa itu pemadanan corak('pattern matching') di dalam Elixir dan bagaimana ianya bermanafaat. Teknik 'recursion' memang agak sukar untuk difahami, tetapi pemadanan corak('pattern matching') di dalam Elixir memberikan peluang kepada kita untuk lebih mudah untuk menulis dan memahaminya. 
 
 

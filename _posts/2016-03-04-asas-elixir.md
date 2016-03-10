@@ -35,9 +35,9 @@ Anda boleh membuat pengawasan terhadap proses-proses anda dengan menggunakan 'Su
 
 ## Komponen Bahasa
 
-### Pattern Matching
+### Pemadanan Corak(Pattern Matching)
 
-Elixir menggunakan kaedah 'pattern matching' dan bukannya memberikan nilai kepada 'variable'.  Ianya merupakan satu cara berfikir yang agak berbeza, tetapi membenarkan beberapa kaedah programming yang agak berkuasa.  Jika anda tidak begitu jelas mengenai 'pattern matching' melalui Elixir, saya cadangkan melihat artikel saya mengenai 'pattern matching': [Pattern Matching Melalui Elixir](http://alkaha.github.io/2016/03/03/pattern-matching-melalui-elixir).
+Elixir menggunakan kaedah pemadanan corak('pattern matching') dan bukannya memberikan nilai kepada 'variable'.  Ianya merupakan satu cara berfikir yang agak berbeza, tetapi membenarkan beberapa kaedah programming yang agak berkuasa.  Jika anda tidak begitu jelas mengenai pemadanan corak('pattern matching') melalui Elixir, saya cadangkan melihat artikel saya mengenai pemadanan corak('pattern matching'): [Pemadanan Corak(Pattern Matching) Melalui Elixir](http://alkaha.github.io/2016/03/03/pattern-matching-melalui-elixir).
 
 ### Pipe Character ( |> )
 
@@ -55,7 +55,7 @@ Perbezaannya agak tidak ketara, tetapi akan memberikan impak yang besar apabila 
 
 ####  List
 
-Kita mulakan dengan 'list'.  Setiap 'list' di dalam Elixir adalah di dalam bentuk 'linked list' dan boleh diceraikan kepada bahagian elemen yang pertama dan bahagian elemen-elemen yang seterusnya.  Dengan menggunakan 'pattern matching', kita boleh memberikan nilai elemen-elemen ini kepada 'variable' dengan mudah:
+Kita mulakan dengan 'list'.  Setiap 'list' di dalam Elixir adalah di dalam bentuk 'linked list' dan boleh diceraikan kepada bahagian elemen yang pertama dan bahagian elemen-elemen yang seterusnya.  Dengan menggunakan pemadanan corak('pattern matching'), kita boleh memberikan nilai elemen-elemen ini kepada 'variable' dengan mudah:
 {% highlight js %}
 iex> [head | tail] = [1, 2, 3, 4] 
 [1, 2, 3, 4] 
@@ -77,7 +77,7 @@ iex> tail
 
 #### Recursive Functions
 
-Disebabkan oleh peggunaan 'pattern matching' di dalam 'function definition', kita dibolehkan untuk menulis 'recursive function' sebagai beberapa 'function'.  'Function' pertama adalah sebagai 'base function', dan 'function-function' seterusnya adalah untuk menjalankan operasi-operasi seterusnya:
+Disebabkan oleh peggunaan pemadanan corak('pattern matching') di dalam 'function definition', kita dibolehkan untuk menulis 'recursive function' sebagai beberapa 'function'.  'Function' pertama adalah sebagai 'base function', dan 'function-function' seterusnya adalah untuk menjalankan operasi-operasi seterusnya:
 {% highlight js %}
 defmodule MyList do 
 
