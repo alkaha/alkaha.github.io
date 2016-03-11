@@ -46,7 +46,7 @@ Interactive Elixir - press Ctrl+C to exit (type h() ENTER for help)
 {% endhighlight %}
 
 `iex` adalah untuk 'Interactive Elixir'. Di dalam `iex` kita boleh menaipkan apa-apa arahan dan akan mendapat paparan hasil arahan tersebut:
-{% highlight ruby %}
+{% highlight bash %}
 iex> 40 + 2
 42
 iex> "hello" <> " world"
@@ -55,7 +55,7 @@ iex> # gunakan simbol ini untuk membuat komen
 nil
 {% endhighlight %} 
 Selain dari nombor dan rentetan('string') sebagaimana di atas, kita juga selalu menggunakan 'data type' berikut:
-{% highlight ruby %}
+{% highlight bash %}
 iex> :atom           # satu identifier (juga dikenali sebagai Symbol di dalam bahasa lain)
 :atom
 iex> [1, 2, "three"] # Lists (selalunya digunakan untuk memegang beberapa nilai dinamik)
@@ -64,7 +64,7 @@ iex> {:ok, "value"}  # Tuples (selalunya digunakan untuk memegang beberapa nilai
 {:ok, "value"}
 {% endhighlight %} 
 Setelah aplikasi Portal kita siap, kita akan berupaya untuk menaip arahan-arahan berikut di dalam `iex`:
-{% highlight ruby %}
+{% highlight bash %}
 # Tembak dua pintu: satu orange, satu blue
 iex(1)> Portal.shoot(:orange)
 {:ok, #PID<0.72.0>}
@@ -87,11 +87,11 @@ Hebat, bukan?
 
 ## Projek pertama kita
 Elixir didatangkan bersama satu tool bernama `Mix`. `Mix` adalah apa yang pengguna Elixir gunakan untuk membuat, mengkompil, dan menguji projek-projek.  Buat satu projek baru yang bernama `portal` menggunakan `mix`. Apabila membuat projek ini, kita akan menghantar arahan `--sup`, iaitu arahan untuk membina satu 'supervision tree'.  Kita akan meneroka lebih lanjut apa itu 'supervision tree' kemudian.  Untuk masa sekarang, cuma taipkan:
-{% highlight ruby %}
+{% highlight bash %}
 $ mix new portal --sup
 {% endhighlight %} 
 Arahan di atas akan membuat satu direktori baru bernama `portal` yang mengandungi beberapa fail.  Masuk ke dalam direktori `portal` dan taipkan `mix test` untuk membuat pengujian projek.
-{% highlight ruby %}
+{% highlight bash %}
 $ cd portal
 $ mix test  
 {% endhighlight %}
@@ -108,31 +108,31 @@ Apabila aplikasi penyunting teks telah dibuka, lihat apa yang ada di dalam direk
 - test - di mana kita meletakkan fail-fail untuk tujuan pengujian('test')
 
 Sekarang kita boleh menjalankan sesi `iex` di dalam projek kita, dengan menaip:
-{% highlight ruby %}
+{% highlight bash %}
 $ iex -S mix
 {% endhighlight %}
 
 ## Pemadanan Corak(Pattern Matching)
 
 Sebelum kita membina aplikasi, kita perlu belajar mengenai pemadanan corak('pattern matching').  Penggunaan `=` di dalam Elixir agak berbeza dengan apa yang kita lihat di dalam bahasa lain:
-{% highlight ruby %}
+{% highlight bash %}
 iex> x = 1
 1
 iex> x
 1
 {% endhighlight %}
 Nampak macam biasa, tapi apa akan jadi jika kita terbalikkan operasi itu:
-{% highlight ruby %}
+{% highlight bash %}
 iex> 1 = x
 1
 {% endhighlight %}
 Berjaya!  Ini kerana Elixir cuba untuk menyesuaikan arahan sebelah kanan dengan arahan di sebelah kiri.  Oleh sebab keduanya di-set kepada `1`, arahan tersebut berjaya dijalankan.  Kita cuba yang lain pula:
-{% highlight ruby %}
+{% highlight bash %}
 iex> 2 = x
 ** (MatchError) no match of right hand side value: 1
 {% endhighlight %}
 Sekarang kenyataan ini tidak dapat disesuaikan, jadi kita akan mendapat ralat.  Di dalam Elixir, kita juga gunakan kaedah pemadanan corak('pattern matching') untuk penyesuaian struktur data.  Sebagai contoh, kita boleh gunakan `[head|tail]` untuk mengekstrak 'head'(elemen pertama) dan 'tail'(elemen selebihnya) di dalam satu List:
-{% highlight ruby %}
+{% highlight bash %}
 iex> [head|tail] = [1, 2, 3]
 [1, 2, 3]
 iex> head
@@ -141,12 +141,12 @@ iex> tail
 [2, 3]
 {% endhighlight %}
 Menyesuaikan list kosong kepada [head\|tail] menyebabkan ralat:
-{% highlight ruby %}
+{% highlight bash %}
 iex> [head|tail] = []
 ** (MatchError) no match of right hand side value: []
 {% endhighlight %}
 Akhir sekali kita juga boleh gunakan kenyataan [head\|tail] untuk menambah satu elemen kepada kepala satu list:
-{% highlight ruby %}
+{% highlight bash %}
 iex> list = [1,2,3]
 [1,2,3]
 iex> [0|list]
@@ -158,14 +158,14 @@ iex> [0|list]
 Data struktur Elixir adalah 'immutable'(tidak membenarkan perubahan pada data setelah diset).  Di dalam contoh di atas, kita tidak membuat perubahan kepada list tersebut.  Kita boleh ceraikan satu list, atau menambah elemen baru, tetapi list asal tidak akan berubah.
 
 Walaupun begitu, kita perlu menyimpan bentuk keadaan data(state), contohnya kedudukan data semasa pindahan melalui portal, kita perlukan kaedah untuk menyimpan keadaan semasa data semasa proses tersebut.  Di dalam Elixir, salah satu kaedah tersebut dipanggil sebagai 'agent'.  Sebelum meggunakan 'agent' kita perlu melihat secara ringkas akan fungsi tanpa nama('anonymous function'):
-{% highlight ruby %}
+{% highlight bash %}
 iex> adder = fn a,b -> a + b end
 #fungsi<12.90072148/2 in :er_eval:expr/5>
 iex> adder.(1,2)
 3
 {% endhighlight %}
 Satu fungsi tanpa nama('anonymous function') dimulai dengan `fn` dan diakhiri dengan `end`, dan simbol `->` digunakan utuk mengasingkan argumen dari badan fungsi tersebut.  Kita gunakan fungsi tanpa nama('anonymous function') untuk mengasakan('initialize'), mencapai dan mengemaskini sesatu 'agent'. 
-{% highlight ruby %}
+{% highlight bash %}
 iex> {:ok, agent} = Agent.start_link(fn -> [] end)
 {:ok, #PID<0.61.0>}
 iex> Agent.get(agent, fn list -> list end)
@@ -224,7 +224,7 @@ end
 Di dalam Elixir, kita menulis kod di dalam modul-modul, yang pada asasnya adalah fail-fail yang mengandungi beberapa kumpulan fungsi.  Di atas, kita telah menulis empat fungsi, semuanya siap didokumentasikan.
 
 Sekarang kita akan menguji kod yang kita tulis.  Buka satu shell baru dengan menaip `iex -S mix`.  Apabila memulakan satu sesi shell yang baru, Elixir akan mengkompilkan fail kita, jadi kita boleh terus menggunakannya:
-{% highlight ruby %}
+{% highlight bash %}
 iex> Portal.Door.start_link(:pink)
 {:ok, #PID<0.68.0>}
 iex> Portal.Door.get(:pink)
@@ -243,7 +243,7 @@ iex> Portal.Door.pop(:pink)
 Excellent!
 
 Satu aspek yang menarik mengenai Elixir ialah di mana dokumentasi diberikan layanan utama.  Oleh sebab kita telah siap menyediakan dokumetasi untuk kod Portal.Door, kita boleh mencapai dokumentasi tersebut melalui terminal.  Cuba:
-{% highlight ruby %}
+{% highlight bash %}
 iex> h Portal.Door.start_link
 {% endhighlight %}
 ## pindahan Melalui Portal
@@ -361,7 +361,7 @@ Di dalam 'snippet' di atas kita telah membina 'protocol' `Inspect` untuk 'struct
 Kemudian kita akan memanggil `inspect` beberapa kali, untuk mendapatkan struktur dan data untuk `left` dan `right`.  Akhir sekali kita akan memulangkan satu rentetan('string') yang menggambarkan kedudukan portal tersebut.
 
 Mulakan satu sesi baru `iex` dengan menaip `iex -S mix` untuk melihat hasilnya:
-{% highlight ruby %}
+{% highlight bash %}
 iex> Portal.Door.start_link(:orange)
 {:ok, #PID<0.59.0>}
 iex> Portal.Door.start_link(:blue)
@@ -460,7 +460,7 @@ fungsi di atas menjadi sebahagian dari 'supervisor' bernama `Portal.Supervisor` 
 Untuk memulakan proses 'child' tersebut, 'supervisor' perlu memulakan fungsi `Portal.Door.start_link(color)`, di mana 'color' adalah nilai yang dihantar kepada fungsi `start/2` di atas.  Jika kita memulakan fungsi `Supervisor.start_child(Portal.Supervisor, [foo, bar, baz])`, 'supervisor' itu akan cuba untuk menjalankan proses 'child' melalui `Portal.Door.start_link(foo, bar, baz)`.
 
 Masa untuk menguji fungsi 'menembak' pintu portal kita.  Mulakan sesi `iex -S mix` dan:
-{% highlight ruby %}
+{% highlight bash %}
 iex> Portal.shoot(:orange)
 {:ok, #PID<0.72.0>}
 iex> Portal.shoot(:blue)
@@ -479,7 +479,7 @@ iex> Portal.push_right(portal)
 {% endhighlight %}
 
 Apa akan jadi jika kita matikan proses untuk `:blue` sekarang?
-{% highlight ruby %}
+{% highlight bash %}
 iex> Process.unlink(Process.whereis(:blue))
 true
 iex> Process.exit(Process.whereis(:blue), :shutdown)
@@ -501,7 +501,7 @@ Outstanding!
 Aplikasi portal kita telah berjaya dijalankan, jadi sekarang kita akan mencuba proses pindahan teragih('distributed transfer').  Ianya amat hebat jika anda menjalankan kod kita di atas dua mesin berlainan di dalam rangkaian anda.  Walaubagaimanapun, jika tidak mempunya mesin lain, kita masih boleh membuat pengujian ini.
 
 Kita boleh mulakan satu sesi `iex` sebagai satu nod di dalam satu 'network' dengan menggunakan pilihan `--sname`.  Kita boleh mula mencuba:
-{% highlight ruby %}
+{% highlight bash %}
 $ iex --sname room1 --cookie secret -S mix
 Interactive Elixir - press Ctrl+C to exit (type h() ENTER for help)
 iex(room1@jv)1>
@@ -509,23 +509,23 @@ iex(room1@jv)1>
 Kita boleh lihat di dalam terminal `iex` ini agak berlainan dengan yang sebelum ini.  Sekarang kita nampak nama `room1@jv` dipaparkan.  `room1` adalah nama yang kita berikan untuk nod dan `jv` adalah 'network name' kepada komputer yang menjalankan nod tersebut.  Mesin saya menunjukkan `jv`, mesin anda mungkin menggunakan nama lain.  Kod di bawah akan menggunakan `room1@COMPUTER-NAME` dan `room2@COMPUTER-NAME` dan anda perlu menukar `COMPUTER-NAME` kepada 'network name' komputer anda.
 
 Di dalam sesi `iex` bernama `room1`, cuba 'tembak' satu pintu `:blue`:
-{% highlight ruby %}
+{% highlight bash %}
 iex(room1@COMPUTER-NAME)> Portal.shoot(:blue)
 {:ok, #PID<0.65.0>}
 {% endhighlight %}  
 Sekarang mulakan satu sesi `iex` bernama `room2`:
-{% highlight ruby %}
+{% highlight bash %}
 $ iex --sname room2 --cookie secret -S mix
 {% endhighlight %}
 > Nota: 'cookie' yang sama hendaklah digunakan di kedua-dua komputer untuk membenarkan kedua-dua nod Elixir tersebut berkomuikasi antara satu sama lain.
 
 API 'Agent' membenarkan kita untuk membuat permohonan silang nod('cross-node requests').  Apa yang perlu dilakukan adalah menghantar nama nod di mana 'agent' yang cuba dicapai sedang berjalan apabila menjalankan fungsi-fungsi `Portal.Door`.  Sebagai contoh cuba capai pintu 'blue' dari `room2`:
-{% highlight ruby %}
+{% highlight bash %}
 iex(room2@COMPUTER-NAME)> Portal.Door.get({:blue, :"room1@COMPUTER-NAME"})
 []
 {% endhighlight %}
 Ini bermaksud kita boleh dapat melaksanakan pindahan teragih('distributed transfer') hanya dengan menggunakan nama nod.  Ketika masih di dalam `room2`, cuba:
-{% highlight ruby %}
+{% highlight bash %}
 iex(room2@COMPUTER-NAME)> Portal.shoot(:orange)
 {:ok, #PID<0.71.0>}
 iex(room2@COMPUTER-NAME)> orange = {:orange, :"room2@COMPUTER-NAME"}
@@ -546,7 +546,7 @@ iex(room2@COMPUTER-NAME)> Portal.push_right(portal)
 Awesome!  Kita dapat melaksanakan pindahan teragih('distributed transfer') tanpa mengubah walau satu baris dari kod kita.
 
 Walaupun masa ini `room2` sedang membuat koordinasi proses pindahan, kita masih boleh melihat proses pindahan tersebut dari `room1`.
-{% highlight ruby %}
+{% highlight bash %}
 iex(room1@COMPUTER-NAME)> orange = {:orange, :"room2@COMPUTER-NAME"}
 {:orange, :"room2@COMPUTER-NAME"}
 iex(room1@COMPUTER-NAME)> blue = {:blue, :"room1@COMPUTER-NAME"}
