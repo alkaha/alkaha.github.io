@@ -75,7 +75,7 @@ Kita akan dapat melihat fail-fail berikut dihasilkan:
 {% endhighlight %}
 
 Kemudian kita perlu memasang 'dependencies':
-{% highlight js %} 
+{% highlight bash %} 
 $ cd blog_phoenix
 $ mix deps.get
 {% endhighlight %}
@@ -85,7 +85,7 @@ Selepas mengkompil kita akan mendapat aplikasi yang sedia untuk digunakan di: `h
 ## Langkah 2
 
 Sekarang kita sudah bersedia untuk menulis fungsi-fungsi teras pada aplikasi ini.  Kita memerlukan kemudahan untuk membuat kerja-kerja `CRUD` untuk setiap `post` dan juga kemudahan untuk membuat `comment` kepada setiap `post` (ianya satu aplikasi blog yang ringkas).  Untuk mencapai tujuan ini, Phoenix menyediakan 4 jenis `generator`:
-{% highlight ruby %} 
+{% highlight bash %} 
 $ mix phoenix.gen.html →  yang menghasilkan 'model', 'view', 'controllers', 'repository', 'templates', 'tests'
 $ mix phoenix.gen.channel →  yang menghasilkan 'channel' dan 'tests'
 $ mix phoenix.gen.json →  untuk kegunaan API, menghasilkan 'model', 'view', 'controllers', 'repository', 'tests'
@@ -127,14 +127,14 @@ Untuk melihat senarai `routing` kita boleh gunakan:
 yang juga agak sama dengan yang di dalam dunia Rails.  Phoenix menggunaka Ecto secara 'default' untuk berkomunikasi dan berinteraksi dengan pangkala data.  Ecto menyediakan 'adapter' untuk PostgreSQL, MySQL dan SQLite (jumlah pangkalan data yang disokong semakin bertambah).  Kita boleh dapatkan penjelasan yang terperinci untuk 'library' [Ecto]() di bawah dokumentasi Phoenix di [Github]().
 
 Ecto memberikan kita kemudahan untuk menghasilkan 'table' `Post` di dalam pangkalan data dengan menjalankan skrip 'migration':
-{% highlight ruby %}
+{% highlight bash %}
 $ mix ecto.migrate 
 {% endhighlight %}
 
 Senarai fail yang dihasilkan oleh skrip ini berada di `priv/repo/migrations/`.
 
 Jika kita jalankan kod di atas, kita akan mendapat ralat: kerana kita masih belum membuat pangkalan data, jadi untuk itu kita perlu jalankan:
-{% highlight ruby %}
+{% highlight bash %}
 $ mix ecto.create
 $ mix ecto.migrate
 {% endhighlight %}

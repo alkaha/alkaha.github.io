@@ -42,11 +42,11 @@ Elixir menggunakan kaedah pemadanan corak('pattern matching') dan bukannya membe
 ### Aksara Paip(Pipe Character, |> )
 
 Aksara paip digunakan untuk membersihkan kod yang ditulis dan menyebabkan tujuan kod itu ditulis dapat difahami dengan lebih jelas.  Lebih kurang sama dengan aksara paip di dalam Unix, ianya adalah cara untuk mengatakan "ambilkan nilai yang dihasilkan oleh fungsi ini dan hantarkannya kepada fungsi yang berikutnya".  Daripada menulis kod seperti ini:
-{% highlight js %}
+{% highlight bash %}
 process(parse_arg(args))
 {% endhighlight %}
 kita akan menulis seperti ini:
-{% highlight js %}
+{% highlight bash %}
 args |> pass_arg |> process
 {% endhighlight %}
 Perbezaannya agak tidak ketara, tetapi akan memberikan impak yang besar apabila menulis kod untuk operasi yang lebih besar.
@@ -56,7 +56,7 @@ Perbezaannya agak tidak ketara, tetapi akan memberikan impak yang besar apabila 
 ####  List
 
 Kita mulakan dengan 'list'.  Setiap 'list' di dalam Elixir adalah di dalam bentuk 'linked list' dan boleh diceraikan kepada bahagian elemen yang pertama dan bahagian elemen-elemen yang seterusnya.  Dengan menggunakan pemadanan corak('pattern matching'), kita boleh memberikan nilai elemen-elemen ini kepada pembolehubah dengan mudah:
-{% highlight js %}
+{% highlight bash %}
 iex> [head | tail] = [1, 2, 3, 4] 
 [1, 2, 3, 4] 
 iex> head 
@@ -66,7 +66,7 @@ iex> tail
 {% endhighlight %} 
 
 Elemen terakhir di dalam 'list' Elixir adalah satu 'list' kosong, sebagaimana berikut:
-{% highlight js %}
+{% highlight bash %}
 iex> [head | tail] = [1] 
 [1] 
 iex> head 
@@ -78,7 +78,7 @@ iex> tail
 #### Fungsi Rekursif(Recursive Functions)
 
 Disebabkan oleh peggunaan pemadanan corak('pattern matching') di dalam takrifan fungsi('function definition'), kita dibolehkan untuk menulis fungsi rekursif('recursive function') sebagai beberapa fungsi.  Fungsi pertama adalah sebagai fungsi tapak('base function'), dan fungsi-fungsi seterusnya adalah untuk menjalankan operasi-operasi seterusnya:
-{% highlight js %}
+{% highlight ruby %}
 defmodule MyList do 
 
   def square([]), do: [] 
@@ -99,7 +99,7 @@ Teknik-teknik sebegini menjadi asas kepada rekursi('recursion') di dalam Elixir.
 #### Enum Library
 
 Enum Library di dalam Elixir menggunakan kaedah rekursi dan ianya amat hebat.  Ini bermakna kita tidak perlu menulis fungsi rekursif kita sendiri untuk kebanyakan operasi yang melibatkan 'list':
-{% highlight js %}
+{% highlight bash %}
 iex> Enum.sum([1, 2, 3, 4])
 10
 {% endhighlight %}
