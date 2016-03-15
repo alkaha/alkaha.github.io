@@ -3,7 +3,7 @@ layout: post
 title: Mengaturcara Elixir Bahagian 2 - Fungsi dan Pipeline
 ---
 
-- Dokumen asal: [Programming Elixir](https://pragprog.com/magazines/2013-07/programming-elixir)
+- Dokumen asal: [Programming Elixir: Functions dan Pipeline](https://pragprog.com/magazines/2013-07/programming-elixir)
 - Penulis asal: [Dave Thomas](https://pragprog.com)
 
 ---

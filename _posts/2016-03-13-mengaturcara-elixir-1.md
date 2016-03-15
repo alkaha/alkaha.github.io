@@ -3,7 +3,7 @@ layout: post
 title: Mengaturcara Elixir - Satu Pengenalan
 ---
 
-- Dokumen asal: [Programming Elixir](https://pragprog.com/magazines/2013-06/programming-elixir)
+- Dokumen asal: [Programming Elixir: A Gentle Introduction](https://pragprog.com/magazines/2013-06/programming-elixir)
 - Penulis asal: [Dave Thomas](https://pragprog.com)
 
 ---
