@@ -115,7 +115,7 @@ Lain dari yang dapat dilihat, cuma ada satu tetapan untuk fungsi `fib`.  Ia cuma
 
 Dua kepala pertama memilih kes di mana argumen adalah `0` atau `1`.  Mereka menggunakan bentuk singkatan `do: expr` untuk memulangkan nilai `1`.  Langkah ketiga adalah langkah rekursif.  Jika tiada satu pun antara kedua-dua fungsi pertama padan dengan corak, fungsi ketiga akan dijalankan.
 
-Apa berlaku jika kita menghantar argumen bernilai negatif.  Sekarang, ia akan membuat 'loop' sehingga kita kehabisan 'stack' atau sabar - menolak 1 atau 2 dari nilai negatif tidak akan mencapai 0.  Nasib baik, Elixir mempunyai klausa `guard`, yang membenarkan kita untuk meletakkan constraint tambahan pada pemadanan corak.
+Apa berlaku jika kita menghantar argumen bernilai negatif.  Sekarang, ia akan membuat 'loop' sehingga kita kehabisan 'stack' atau sabar - menolak 1 atau 2 dari nilai negatif tidak akan mencapai 0.  Nasib baik, Elixir mempunyai klausa `guard`, yang membenarkan kita untuk meletakkan kekangan tambahan pada pemadanan corak.
 {% highlight ruby %}
 defmodule Fibonacci do
  	
