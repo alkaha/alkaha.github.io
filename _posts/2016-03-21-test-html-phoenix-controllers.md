@@ -2,9 +2,10 @@
 layout: post
 title: Membuat Pengujian HTML di dalam Controller Phoenix 
 ---
+
 - Dokumen asal: [Testing HTML in Phoenix Controllers](https://robots.thoughtbot.com/testing-phoenix-controllers-with-ex-machina)
 - Penulis asal: [Paul Smith](https://twitter.com/paulcsmith)
-- Ringkasan: 
+
 ---
 
 Phoenix mempunyai beberapa [helper](http://hexdocs.pm/phoenix/Phoenix.ConnTest.html) untuk kegunaan pengujian sambutan HTML.  Penjana yang siap tersedia di dalam Phoenix memberikan cara yang baik untuk bermula dengan proses pengujian HTML, tetapi diharapkan panduan ini akan memberikan penjelasan yang agak lebih mendalam.
@@ -86,7 +87,7 @@ def application do
 end
 ```
 
-Kemudian, kita akan membuat 'factory' yang digunakan untuk menjana data ujian.  Kita akan menggunakan fail `lib/my_blog/factory.ex`.  Pastikan kita gunakan 'extension' `.ex`, bukannya `.exs`.  Lihat fail [ExMachina README] untuk maklumat semasa.
+Kemudian, kita akan membuat 'factory' yang digunakan untuk menjana data ujian.  Kita akan menggunakan fail `lib/my_blog/factory.ex`.  Pastikan kita gunakan 'extension' `.ex`, bukannya `.exs`.  Lihat fail [ExMachina README](https://github.com/thoughtbot/ex_machina) untuk maklumat semasa.
 
 ```elixir
 defmodule MyBlog.Factory do
