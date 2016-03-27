@@ -9,7 +9,7 @@ title: Belajar Elixir Dengan Membina Pencari Happy Number
 
 ---
 
-Baru-baru ini saya mula belajar Elixir dan memutuskan untuk membina satu aplikasi Pencari Happy Number.  Ini adalah salah satu masalah aturcara kegemaran saya - tidak seperti namanya, ia tidak melibatkan banyak matematik.  Sebaliknya, penyelesaian kepada Pencari Happy Number melibatkan rekursi, penukaran type, dan pemahaman list, semua perkara penting untuk diketahui apabila meneroka satu bahasa baru.
+Baru-baru ini saya mula belajar Elixir dan memutuskan untuk membina satu aplikasi Pencari Happy Number.  Ini adalah salah satu masalah aturcara kegemaran saya - tidak seperti namanya, ia tidak melibatkan banyak matematik.  Sebaliknya, penyelesaian kepada Pencari Happy Number melibatkan rekursi, penukaran type, dan list comprehension(kaedah membina satu list dari memproses elemen-elemen dari satu list lain), semua perkara penting untuk diketahui apabila meneroka satu bahasa baru.
 
 ### Apa itu Happy Number?
 
