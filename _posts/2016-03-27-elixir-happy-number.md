@@ -146,7 +146,7 @@ Tetapi kebolehubahan tidak ada dalam Elixir, jadi bagaimana kita selesaikan masa
 
 Ubahkan badan fungsi `find/1` supaya ia memanggil satu fungsi baru yang kita namakan `_find/2`, dan pendahkan semua kerja sedia-ada ke dalam fungsi tersebut.  Pertama kali kita memanggil `_find/2` dari dalam `find/1`, kita akan hantarkan satu list kosong kepadanya.
 
-Ini membenarkan kita menyimpan nama `find/1` dan menyembunyikan perlaksanaan penghantaran senarai cubaan-cubaa.  Dan bagaimana kita hantarkan list baru tersebut?  Lihat baris 14 di bawah, di mana kita guna [sum '|' guesses] untuk mencipta satu list baru: kepala list itu ialah cubaan paling baru, dan ekornya ialah satu list cubaan-cubaan terdahulu.
+Ini membenarkan kita menyimpan nama `find/1` dan menyembunyikan perlaksanaan penghantaran senarai cubaan-cubaa.  Dan bagaimana kita hantarkan list baru tersebut?  Lihat baris 14 di bawah, di mana kita guna [sum \| guesses] untuk mencipta satu list baru: kepala list itu ialah cubaan paling baru, dan ekornya ialah satu list cubaan-cubaan terdahulu.
 
 Akhir sekali, kita boleh membuat `_find/2` sebagai fungsi peribadi dengan mentakrifnya dengan `defp`, dan bukannya `def`; ini memperkasakan tabiat peribadi kandungannya dan menguatkan penggunaan API awam kita hanya kepada fungsi `find/1`.
 
