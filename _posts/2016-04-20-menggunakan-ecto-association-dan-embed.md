@@ -108,6 +108,7 @@ Fungsi `Ecto.build_assoc/3` di atas membina komen menggunakan id yang ditetapkan
 
 ```elixir
 %Comment{post_id: post.id, body: "Excellent"}
+```
 
 Fungsi `Ecto.build_assoc/3` amat berguna di dalam kontroler Phoenix.  Sebagai contoh, jika kita mahu mengaitkan satu post dengan pengguna yang telah log in, kita boleh buat:
 
@@ -370,8 +371,8 @@ Walaupun memanggil `MyApp.TodoItem.changeset/2` adalah merupakan kaedah lalai,  
 
 Oleh itu jika satu association mempunyai peraturan validasi yang berbeza bergantung kepada jika ia dihantar melalui association bersarang atau diuruskan secara lansung,  kita boleh asingkan business rule tersebut dengan menyediakan dua fungsi changeset yang berbeza.  Dan juga sebab kita menggunakan fungsi-fungsi di dalam seluruh operasi ini, mereka adalah senang untuk dikarang dan diuji.
 
-##Ringkasan
+##  Ringkasan
 
-Di dalam artikel ini kita telah belajar asas yang diperlukan untuk menggunakan association dan embed,  sehingga kepada contoh yang agak rumit menggunakan association bersarang.  Jika anda mahu membuat lebih banyak pengubahsuaian, baca dokumentasi untk mentakrifkan association/embed di dalam [Ecto.Schema](http://hexdocs.pm/ecto/Ecto.Schema.html) atau bagaimana untuk memanipulasi changeset melalui [Ecto.Chnageset](http://hexdocs.pm/ecto/Ecto.Changeset.html).
+Di dalam artikel ini kita telah belajar asas yang diperlukan untuk menggunakan association dan embed,  sehingga kepada contoh yang agak rumit menggunakan association bersarang.  Jika anda mahu membuat lebih banyak pengubahsuaian, baca dokumentasi untk mentakrifkan association/embed di dalam [Ecto.Schema](http://hexdocs.pm/ecto/Ecto.Schema.html) atau bagaimana untuk memanipulasi changeset melalui [Ecto.Changeset](http://hexdocs.pm/ecto/Ecto.Changeset.html).
 
 Maklumat lanjut mengenai view boleh di dapati di dalam projek `Phoenix.HTML`, khususnya di bawah [Phoenix.HTML.Form](http://hexdocs.pm/phoenix_html/Phoenix.HTML.Form.html), di mana fungsi `inputs_for/4` ditakrifkan.
